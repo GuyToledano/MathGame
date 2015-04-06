@@ -48,7 +48,7 @@ char GameManager::mainMenu()const
 	return selection;
 }
 
-void GameManager::run()
+void GameManager::run()     
 {
 	bool userWantsToPlay = true;
 	// we run as long as the user wants
@@ -102,7 +102,7 @@ bool GameManager::playGame()
 	// this is the game LEVELS loop
 	//-------------------------------------------------------------
 	char action = GameManager::LevelOptions::NEXT_LEVEL;
-	while (actualGame.hasNextLevel() && action == GameManager::LevelOptions::NEXT_LEVEL) {
+	while (actualGame.hasNextLevel(currentLevel) && action == GameManager::LevelOptions::NEXT_LEVEL) {
 		action = playNextLevel();
 	}
 	//-------------------------------------------------------------
