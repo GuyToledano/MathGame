@@ -28,6 +28,8 @@
 
 
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include "GameManager.h"
 #include "io_utils.h"
 #include "TheMathGame.h"
@@ -42,7 +44,9 @@ using namespace std;
 int main(){
 	clear_screen();
 	hideCursor();
-	GameManager(TheMathGame(), 200, 2).run();
+	srand((unsigned int)time(NULL));
+	TheMathGame MathGame = TheMathGame();
+	GameManager(MathGame, 200, 2).run();
 	return 0;
 }
 //==========================

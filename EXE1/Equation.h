@@ -10,6 +10,7 @@ class Equation
 	int result;
 	int oper;
 	int hiddenNum;
+	int targetNum;
 	enum
 	{
 		PLUS,
@@ -19,7 +20,8 @@ class Equation
 	};
 public:
 	Equation(const unsigned int currentLevel);
-	
+	void printEquation(int x, int y);
+	char getOperator(int oper);
 };
 
 #endif
