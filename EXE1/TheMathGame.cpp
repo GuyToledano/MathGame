@@ -41,13 +41,16 @@ bool TheMathGame::hasNextLevel(const unsigned int currentLevel)const
 
 	return false;
 }
+//TODO: create c'tor of TheMathGame to initiate both players
 void TheMathGame::startLevel(const unsigned int currentLevel)
 {
 	clear_screen();
-	this->player1 = Player()
-	this->player1.setLives();
-	this->player2.setLives();
 
+	this->player1 = Player('@', 10, 9, 0, 3);
+	this->player2 = Player('#', 70, 9, 0, 3);
+	
+	this->player1.showPlayer(10, 9);
+	this->player2.showPlayer(70, 9);
 	setEquations(currentLevel);
 	printframe(currentLevel);
 }
@@ -78,7 +81,60 @@ void TheMathGame::printframe(const unsigned int currentLevel)
 // get a list with keyHits and returns a list with the keys that were used
 void TheMathGame::doIteration(const list<char>& keyHits)
 {
+	char direction;
+	int playerMove;
+	bool gotDirectionForPlayer1 = false;
+	bool gotDirectionForPlayer2 = false;
 
+	for (list<char>::const_iterator itr = keyHits.cbegin(); 
+		(itr != keyHits.cend()) && (gotDirectionForPlayer1 == false || gotDirectionForPlayer2 == false);
+		++itr)
+	{
+		direction = *itr;
+		if (isValid(direction))
+		{
+			playerMove = assignToPlayer(direction);
+
+			if (playerMove == 1 && gotDirectionForPlayer1 == false)
+			{
+				gotDirectionForPlayer1 = true;
+				this->player1.move(direction);
+			}
+			if (playerMove == 2 && gotDirectionForPlayer2 == false)
+			{
+				gotDirectionForPlayer2 = true;
+				this->player2.move(direction);
+			}			
+		}
+	}
+}
+//TODO DEFINE PLAYER X X
+int TheMathGame::assignToPlayer(char direction)
+{
+	switch (direction)
+	{
+	case 'w':
+		return 1;
+	case 'd':
+		return 1;
+	case 'a':
+		return 1;
+	case 'x':
+		return 1;
+	case 'i':
+		return 2;
+	case 'l':
+		return 2;
+	case 'j':
+		return 2;
+	case 'm':
+		return 2;
+	}
+	return 0;
+}
+bool TheMathGame::isValid(char direction)
+{
+	return (assignToPlayer(direction) != 0);
 }
 void TheMathGame::doSubIteration()
 {

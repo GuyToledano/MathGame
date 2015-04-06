@@ -25,6 +25,8 @@ public:
 	virtual void doSubIteration();
 	virtual void showInstructions()const;
 	void setEquations(const unsigned int currentLevel);
+	int assignToPlayer(char direction);
+	bool isValid(char direction);
 };
 
 #endif
