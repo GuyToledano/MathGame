@@ -42,7 +42,8 @@ bool TheMathGame::hasNextLevel(const unsigned int currentLevel)const
 void TheMathGame::startLevel()
 {
 	gotoxy();
-
+	cout << "--------------------------------" << endl;
+	
 
 
 }
