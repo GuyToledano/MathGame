@@ -34,8 +34,7 @@
 /****************************************************/
 /******************* Defines ************************/
 /****************************************************/
-#define LAST_LEVEL 20
-#define FIRST_LEVEL 0
+
 
 using namespace std;
 
@@ -47,7 +46,7 @@ public:
 	// virtual fucnction with =0 is called an "abstract method"
 	// abstract method must be implemented by non-abstract inherited class
 	virtual bool isLevelDone()const = 0;
-	virtual bool hasNextLevel()const = 0;
+	virtual bool hasNextLevel(const unsigned int currentLevel)const = 0;
 	virtual void startLevel() = 0;
 
 	// get a list with keyHits and returns a list with the keys that were used
