@@ -28,7 +28,7 @@ public:
 	int getX() { return x; }
 	int getY() { return y; }
 
-	void showPlayer(int x, int y);
+	void showPlayer(int x, int y); 
 	void printlives(int x, int y);
 	int getscore() { return score; }
 
