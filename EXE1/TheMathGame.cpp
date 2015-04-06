@@ -30,16 +30,24 @@ bool TheMathGame::isLevelDone()const
 {
 	return true;
 }
-bool TheMathGame::hasNextLevel()const
+bool TheMathGame::hasNextLevel(const unsigned int currentLevel)const
 {
 
 
-	if (( + 1) <= LAST_LEVEL)
+	if (currentLevel <= LAST_LEVEL)
 		return true;
 
 	return false;
 }
 void TheMathGame::startLevel()
+{
+	gotoxy();
+
+
+
+}
+
+void TheMathGame::printLayout()
 {
 
 }
