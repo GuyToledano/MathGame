@@ -41,9 +41,13 @@ bool TheMathGame::hasNextLevel(const unsigned int currentLevel)const
 
 	return false;
 }
+//TODO: create c'tor of TheMathGame to initiate both players
 void TheMathGame::startLevel(const unsigned int currentLevel)
 {
 	clear_screen();
+
+	this->player1 = Player('@', 10, 9, 0, 3);
+	this->player2 = Player('#', 70, 9, 0, 3);
 
 	this->player1.setLives();
 	this->player2.setLives();

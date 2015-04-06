@@ -13,17 +13,22 @@ class Player
 	int x;
 	int y;
 	int lives;
-
+	// TODO: create 'Point' class, and point data member instead of 2 ints
 public:
-	Player(char body='*', Equation *eq = NULL, int x=0, int y=0, int score = 0, int lives = 3) 
-		: body(body), x(x), y(y), score(score), lives(lives), eq(eq) {}
+	Player(char body='*',  int x=0, int y=0, int score = 0, int lives = 3) 
+		: body(body), x(x), y(y), score(score), lives(lives) {}
 
 	void setEquation(Equation *newEq) { eq = newEq; }
-	void setLives(int newLives = 3) { lives = newLives; }
-
 	Equation* getEquation() { return eq; }
+
+	void setLives(int newLives = 3) { lives = newLives; }	
 	int getLives() { return lives; }
 
+	void setXY(int newX, int newY)  { x = newX; y = newY; }
+	int getX() { return x; }
+	int getY() { return y; }
+
+	void showPlayer(int x, int y);
 	void printlives(int x, int y);
 	int getscore() { return score; }
 

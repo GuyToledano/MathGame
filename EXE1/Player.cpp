@@ -8,3 +8,9 @@ void Player::printlives(int x, int y)
 		cout << "X ";					// TODO: find heart husky
 	}
 }
+
+void Player::showPlayer(int x, int y)
+{
+	gotoxy(x, y);
+	cout << this->body;
+}
