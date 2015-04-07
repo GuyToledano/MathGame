@@ -7,7 +7,9 @@ void Player::printlives(int x, int y)
 	{
 		cout << "X ";					// TODO: find heart ascii
 	}
-}
+	for (int i = 0; i < 3 - lives; i++)
+		cout << "  ";
+}  
 void Player::erasePlayer(int x, int y)
 {
 	gotoxy(x, y);
