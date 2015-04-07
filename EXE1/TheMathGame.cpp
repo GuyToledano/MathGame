@@ -55,7 +55,7 @@ void TheMathGame::startLevel(const unsigned int currentLevel)
 
 	this->player1 = Player('@', 10, 9, MOVE_RIGHT, STAY, 0, 3);
 	this->player2 = Player('#', 70, 9, MOVE_LEFT, STAY, 0, 3);
-	
+	boardInit();
 	setEquations(currentLevel);
 	printframe(currentLevel);
 
@@ -116,6 +116,7 @@ void TheMathGame::doIteration(const list<char>& keyHits)
 			}
 		}
 	}
+	generateNumber();
 	didPlayersCollide();
 	this->player1.move();
 	this->player2.move();
@@ -159,29 +160,179 @@ void TheMathGame::doSubIteration()
 {
 
 }
-
+/************************************************************************************************/
 void TheMathGame::didPlayersCollide()
 {
-	if ((this->player1.getX() == this->player2.getX() - 1) && (this->player1.getDirx() == 1 && this->player2.getDirx() == -1) && (this->player1.getY()==this->player2.getY()))
+	if ((this->player1.getX() + this->player1.getDirx()) == (this->player2.getX() + this->player2.getDirx())
+		&& (this->player1.getY() + this->player1.getDiry()) == (this->player2.getY() + this->player2.getDiry())
+		&& (!(this->player1.isPlayerStationary()||this->player2.isPlayerStationary())))
 	{
-		this->player1.setDirx(0);
-		this->player2.setDirx(0);
+		this->player1.move();
+		this->player1.setDirx(STAY);
+		this->player2.setDirx(STAY);
+		this->player1.setDiry(STAY);
+		this->player2.setDiry(STAY);
 	}
-	else if ((this->player1.getX() == this->player2.getX() + 1) && (this->player1.getDirx() == -1 && this->player2.getDirx() == 1) && (this->player1.getY() == this->player2.getY()))
-	{
-		this->player1.setDirx(0);
-		this->player2.setDirx(0);
-	}
-	else if ((this->player1.getY() == this->player2.getY() - 1) && (this->player1.getDiry() == 1 && this->player2.getDiry() == -1) && (this->player1.getX() == this->player2.getX()))
-	{
-		this->player1.setDiry(0);
-		this->player2.setDiry(0);
-	}
-	else if ((this->player1.getY() == this->player2.getY() + 1) && (this->player1.getDiry() == -1 && this->player2.getDiry() == 1) && (this->player1.getX() == this->player2.getX()))
-	{
-		this->player1.setDiry(0);
-		this->player2.setDiry(0);
-	}
+	else if (((this->player1.getX() + this->player1.getDirx() == this->player2.getX())
+			&& (this->player2.getX() + this->player2.getDirx() == this->player1.getX())
+			&& (this->player1.getY()==this->player2.getY()))
+			|| ((this->player1.getY() + this->player1.getDiry() == this->player2.getY())
+			&& (this->player2.getY() + this->player2.getDiry() == this->player1.getY())
+			&& (this->player1.getX() == this->player2.getX())))
+		{
+			this->player1.setDirx(STAY);
+			this->player2.setDirx(STAY);
+			this->player1.setDiry(STAY);
+			this->player2.setDiry(STAY);
+		}
 	
+	else if (this->player1.isPlayerStationary())
+	{
+		if ((this->player2.getX() + this->player2.getDirx() == this->player1.getX()
+			&& (this->player1.getY() == this->player2.getY()))
+			|| (this->player2.getY() + this->player2.getDiry() == this->player1.getY()
+			&& (this->player1.getX() == this->player2.getX())))
+		{
+			this->player1.setDirx(STAY);
+			this->player2.setDirx(STAY);
+			this->player1.setDiry(STAY);
+			this->player2.setDiry(STAY);
+		}
 
+	}
+	else if (this->player2.isPlayerStationary())
+	{
+		if ((this->player1.getX() + this->player1.getDirx() == this->player2.getX()
+			&& (this->player2.getY() == this->player1.getY()))
+			|| (this->player1.getY() + this->player1.getDiry() == this->player2.getY()
+			&& (this->player2.getX() == this->player1.getX())))
+		{
+				this->player1.setDirx(STAY);
+				this->player2.setDirx(STAY);
+				this->player1.setDiry(STAY);
+				this->player2.setDiry(STAY);
+			}
+
+	}
+}
+
+void TheMathGame::boardInit()
+{
+	for (int i = 0; i < BOARD_WITDH; i++)
+	{
+		for (int j = 0; j < BOARD_HEIGHT; j++)
+			numberBoard[i][j] = EMPTY_CELL;
+	}
+}
+short int TheMathGame::getRandomNumber()
+{
+	short int number;
+
+	number = rand() % (currentLevel + 10) + 1;
+
+	return number;
+}
+void TheMathGame::generateNumber()
+{
+	short int number;
+	int x, y;
+	int offset;
+	bool validPlace = false;
+	int numOfAttempts = 0;
+
+	number = getRandomNumber();
+	offset = getNumOfDigits(number) - 1;
+	do 
+	{
+		x = rand() % (BOARD_WITDH - offset);
+		y = rand() % (BOARD_HEIGHT)+3;
+		numOfAttempts++;
+
+	} while ((!isValidPlace(x, y, offset + 1)) && (numOfAttempts < 10));
+	
+	if (numOfAttempts != 10)
+		updateBoard(x, y, number);
+	
+}
+bool TheMathGame::isValidPlace(int x, int y, int numOfDigits)
+{
+	
+	for (int i = 0; i < numOfDigits; i++)
+	{
+		if (numberBoard[x + i][y] != EMPTY_CELL)
+			return false;
+
+		if (numberBoard[x + i][y + 1] != EMPTY_CELL)
+			return false;
+
+		if (numberBoard[x + i][y - 1] != EMPTY_CELL)
+			return false;
+	}
+	return !thereIsAPlayerInTheWay(x, y);	
+}
+bool TheMathGame::thereIsAPlayerInTheWay(int x, int y)
+{
+	if (y == this->player1.getY() && x == this->player1.getX())
+		return true;
+
+	if (y == this->player1.getY()+1 && x == this->player1.getX())
+		return true;
+
+	if (y == this->player1.getY()-1 && x == this->player1.getX())
+		return true;
+
+	if (y == this->player1.getY() && x == this->player1.getX()+1)
+		return true;
+
+	if (y == this->player1.getY() && x == this->player1.getX()-1)
+		return true;
+
+	if (y == this->player2.getY() && x == this->player2.getX())
+		return true;
+
+	if (y == this->player2.getY() + 1 && x == this->player2.getX())
+		return true;
+
+	if (y == this->player2.getY() - 1 && x == this->player2.getX())
+		return true;
+
+	if (y == this->player2.getY() && x == this->player2.getX() + 1)
+		return true;
+
+	if (y == this->player2.getY() && x == this->player2.getX() - 1)
+		return true;
+
+	return false;
+}
+void TheMathGame::updateBoard(int x, int y, short int number)
+{
+	int numOfDigits;
+
+	numberBoard[x][y] = number;
+	numOfDigits = getNumOfDigits(number);
+	for (int i = 1; i < numOfDigits; i++)
+	{
+		numberBoard[x + i][y] = PLACE_TAKEN;
+		numberBoard[x + i][y+1] = DO_NOT_PLACE;
+		numberBoard[x + i][y-1] = DO_NOT_PLACE;
+	}
+	if (x != 0)
+		numberBoard[x - 1][y] = DO_NOT_PLACE; 
+
+	numberBoard[x][y - 1] = DO_NOT_PLACE;
+	numberBoard[x][y + 1] = DO_NOT_PLACE;
+	numberBoard[x + numOfDigits][y] = DO_NOT_PLACE;
+
+	gotoxy(x, y);
+	cout << number;
+}
+int TheMathGame::getNumOfDigits(short int num)
+{
+	int count = 0;
+	while (num > 0)
+	{
+		count++;
+		num = num / 10;
+	}
+	return count;
 }
