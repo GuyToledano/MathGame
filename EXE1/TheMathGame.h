@@ -34,11 +34,11 @@ class TheMathGame : public ISpecificGame
 private:
 	Player player1;
 	Player player2;
-	int currentLevel;
+	unsigned int currentLevel;
 	short int numberBoard[BOARD_WITDH][BOARD_HEIGHT];
 	
 public:
-	virtual bool isLevelDone()const;
+	virtual bool isLevelDone();
 	virtual bool hasNextLevel(const unsigned int currentLevel)const;
 	virtual void startLevel(const unsigned int currentLevel);
 	void boardInit();
@@ -58,6 +58,10 @@ public:
 	bool isValidPlace(int x, int y, int numOfDigits);
 	void updateBoard(int x, int y, short int number);
 	bool thereIsAPlayerInTheWay(int x, int y);
+	void playerGetsNumber(Player &p);
+	bool isPlayerGetsNumber(Player &p) const;
+	void removeNumberFromBoard(int x, int y);
+	void updateLives(Player &p);
 
 
 };
