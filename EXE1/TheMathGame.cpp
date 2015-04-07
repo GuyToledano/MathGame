@@ -417,7 +417,7 @@ void TheMathGame::removeNumberFromBoard(int x, int y)
 	numberBoard[x + i][y] = EMPTY_CELL;
 }
 
-
+//TODO: to see why we arent winning when collecting the right number
 
 void TheMathGame::updateLives(Player &p)
 {
