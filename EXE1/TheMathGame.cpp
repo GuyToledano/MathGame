@@ -162,22 +162,22 @@ void TheMathGame::doSubIteration()
 
 void TheMathGame::didPlayersCollide()
 {
-	if ((this->player1.getX() == this->player2.getX() - 1) && (this->player1.getDirx() == 1 && this->player2.getDirx() == -1))
+	if ((this->player1.getX() == this->player2.getX() - 1) && (this->player1.getDirx() == 1 && this->player2.getDirx() == -1) && (this->player1.getY()==this->player2.getY()))
 	{
 		this->player1.setDirx(0);
 		this->player2.setDirx(0);
 	}
-	else if ((this->player1.getX() == this->player2.getX() + 1) && (this->player1.getDirx() == -1 && this->player2.getDirx() == 1))
+	else if ((this->player1.getX() == this->player2.getX() + 1) && (this->player1.getDirx() == -1 && this->player2.getDirx() == 1) && (this->player1.getY() == this->player2.getY()))
 	{
 		this->player1.setDirx(0);
 		this->player2.setDirx(0);
 	}
-	else if ((this->player1.getY() == this->player2.getY() - 1) && (this->player1.getDiry() == 1 && this->player2.getDiry() == -1))
+	else if ((this->player1.getY() == this->player2.getY() - 1) && (this->player1.getDiry() == 1 && this->player2.getDiry() == -1) && (this->player1.getX() == this->player2.getX()))
 	{
 		this->player1.setDiry(0);
 		this->player2.setDiry(0);
 	}
-	else if ((this->player1.getY() == this->player2.getY() + 1) && (this->player1.getDiry() == -1 && this->player2.getDiry() == 1))
+	else if ((this->player1.getY() == this->player2.getY() + 1) && (this->player1.getDiry() == -1 && this->player2.getDiry() == 1) && (this->player1.getX() == this->player2.getX()))
 	{
 		this->player1.setDiry(0);
 		this->player2.setDiry(0);
