@@ -21,6 +21,11 @@
 #define X_MIN 0
 #define Y_MAX 23
 #define Y_MIN 3
+#define BOARD_WITDH 79
+#define BOARD_HEIGHT 21
+#define EMPTY_CELL -1
+#define PLACE_TAKEN -2
+#define DO_NOT_PLACE -3
 
 using namespace std;
 
@@ -29,12 +34,14 @@ class TheMathGame : public ISpecificGame
 private:
 	Player player1;
 	Player player2;
-
+	int currentLevel;
+	short int numberBoard[BOARD_WITDH][BOARD_HEIGHT];
 	
 public:
 	virtual bool isLevelDone()const;
 	virtual bool hasNextLevel(const unsigned int currentLevel)const;
 	virtual void startLevel(const unsigned int currentLevel);
+	void boardInit();
 	void printframe(const unsigned int currentLevel);
 	virtual void doIteration(const list<char>& keyHits);
 	virtual void doSubIteration();
@@ -43,6 +50,16 @@ public:
 	int assignToPlayer(char direction);
 	bool isValid(char direction);
 	void didPlayersCollide();
+	short int getRandomNumber();
+	void generateNumber();
+	virtual void setCurrentLevel(unsigned int currentLevel)  { currentLevel = currentLevel; }
+	virtual unsigned int getCurrentLevel() { return currentLevel; }
+	int getNumOfDigits(short int num);
+	bool isValidPlace(int x, int y, int numOfDigits);
+	void updateBoard(int x, int y, short int number);
+	bool thereIsAPlayerInTheWay(int x, int y);
+
+
 };
 
 #endif
