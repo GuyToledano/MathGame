@@ -22,25 +22,25 @@ void Player::changeDirection(char direction)
 {
 	
 
-	if (direction == player_1_UP || direction == player_2_UP)
+	if (direction == MOVE_UP)
 	{
-		dirx = 0;
-		diry = -1;
+		dirx = STAY;
+		diry = MOVE_UP;
 	}
-	else if (direction == player_1_DOWN || direction == player_2_DOWN)
+	else if (direction == MOVE_DOWN)
 	{
-		dirx = 0;
-		diry = 1;
+		dirx = STAY;
+		diry = MOVE_DOWN;
 	}
-	else if (direction == player_1_LEFT || direction == player_2_LEFT)
+	else if (direction == MOVE_LEFT)
 	{
-		dirx = -1;
-		diry = 0;
+		dirx = MOVE_LEFT;
+		diry = STAY;
 	}
 	else
 	{
-		dirx = 1;
-		diry = 0;
+		dirx = MOVE_RIGHT;
+		diry = STAY;
 	}
 }
 void Player::move(char direction)
