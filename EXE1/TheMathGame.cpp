@@ -2,6 +2,12 @@
 #include "TheMathGame.h"
 #include "io_utils.h"
 #include "Equation.h"
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+using namespace std;
 
 void TheMathGame::showInstructions()const
 {
@@ -46,8 +52,8 @@ void TheMathGame::startLevel(const unsigned int currentLevel)
 {
 	clear_screen();
 
-	this->player1 = Player('@', 10, 9, 0, 3);
-	this->player2 = Player('#', 70, 9, 0, 3);
+	this->player1 = Player('@', 10, 9, 1, 0, 0, 3);
+	this->player2 = Player('#', 70, 9, -1, 0, 0, 3);
 	
 	this->player1.showPlayer(10, 9);
 	this->player2.showPlayer(70, 9);
@@ -98,15 +104,18 @@ void TheMathGame::doIteration(const list<char>& keyHits)
 			if (playerMove == 1 && gotDirectionForPlayer1 == false)
 			{
 				gotDirectionForPlayer1 = true;
-				this->player1.move(direction);
+				this->player1.changeDirection(direction);
 			}
 			if (playerMove == 2 && gotDirectionForPlayer2 == false)
 			{
 				gotDirectionForPlayer2 = true;
-				this->player2.move(direction);
+				this->player2.changeDirection(direction);
 			}			
 		}
 	}
+	didPlayersCollide();
+	this->player1.move();
+	this->player2.move();
 }
 //TODO DEFINE PLAYER X X
 int TheMathGame::assignToPlayer(char direction)
@@ -139,4 +148,30 @@ bool TheMathGame::isValid(char direction)
 void TheMathGame::doSubIteration()
 {
 
+}
+
+void TheMathGame::didPlayersCollide()
+{
+	if ((this->player1.getX() == this->player2.getX() - 1) && (this->player1.getDirx() == 1 && this->player2.getDirx() == -1))
+	{
+		this->player1.setDirx(0);
+		this->player2.setDirx(0);
+	}
+	else if ((this->player1.getX() == this->player2.getX() + 1) && (this->player1.getDirx() == -1 && this->player2.getDirx() == 1))
+	{
+		this->player1.setDirx(0);
+		this->player2.setDirx(0);
+	}
+	else if ((this->player1.getY() == this->player2.getY() - 1) && (this->player1.getDiry() == 1 && this->player2.getDiry() == -1))
+	{
+		this->player1.setDiry(0);
+		this->player2.setDiry(0);
+	}
+	else if ((this->player1.getY() == this->player2.getY() + 1) && (this->player1.getDiry() == -1 && this->player2.getDiry() == 1))
+	{
+		this->player1.setDiry(0);
+		this->player2.setDiry(0);
+	}
+	
+		
 }
