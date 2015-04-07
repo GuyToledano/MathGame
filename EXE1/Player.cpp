@@ -43,12 +43,9 @@ void Player::changeDirection(char direction)
 		diry = STAY;
 	}
 }
-void Player::move(char direction)
+void Player::move()
 {
-	changeDirection(direction);
-
 	erasePlayer(x, y);
-
 	x += dirx;
 	y += diry;
 
