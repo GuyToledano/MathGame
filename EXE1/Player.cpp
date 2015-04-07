@@ -22,17 +22,17 @@ void Player::changeDirection(char direction)
 {
 	
 
-	if (direction == MOVE_UP)
+	if (direction == PLAYER_1_UP || direction == PLAYER_2_UP)
 	{
 		dirx = STAY;
 		diry = MOVE_UP;
 	}
-	else if (direction == MOVE_DOWN)
+	else if (direction == PLAYER_1_DOWN || direction == PLAYER_2_DOWN)
 	{
 		dirx = STAY;
 		diry = MOVE_DOWN;
 	}
-	else if (direction == MOVE_LEFT)
+	else if (direction == PLAYER_1_LEFT || direction == PLAYER_2_LEFT)
 	{
 		dirx = MOVE_LEFT;
 		diry = STAY;
