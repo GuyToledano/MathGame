@@ -37,8 +37,11 @@ void TheMathGame::showInstructions()const
 }
 // virtual fucnction with =0 is called an "abstract method"
 // abstract method must be implemented by non-abstract inherited class
-bool TheMathGame::isLevelDone()const
+bool TheMathGame::isLevelDone()
 {
+	if (player1.getWinner() == true || player2.getWinner() == true)
+		return true;
+
 	return false;
 }
 bool TheMathGame::hasNextLevel(const unsigned int currentLevel)const
@@ -57,6 +60,8 @@ void TheMathGame::startLevel(const unsigned int currentLevel)
 	this->player2 = Player('#', 70, 9, MOVE_LEFT, STAY, 0, 3);
 	boardInit();
 	setEquations(currentLevel);
+	player1.setTargetNum(player1.getEquation()->getTargetNumber());
+	player2.setTargetNum(player1.getEquation()->getTargetNumber());
 	printframe(currentLevel);
 
 	this->player1.showPlayer(10, 9);
@@ -77,9 +82,9 @@ void TheMathGame::printframe(const unsigned int currentLevel)
 	player1.printlives(0, 1);
 	player2.printlives(60, 1);
 	gotoxy(8,1);
-	cout << "score: " << player1.getscore();
+	cout << "score: " << player1.getScore();
 	gotoxy(68, 1);
-	cout << "score: " << player2.getscore();
+	cout << "score: " << player2.getScore();
 	gotoxy(36, 0);
 	cout << "Level: " << currentLevel;
 	gotoxy(0, 2);
@@ -118,9 +123,12 @@ void TheMathGame::doIteration(const list<char>& keyHits)
 	}
 	generateNumber();
 	didPlayersCollide();
+	playerGetsNumber(player1);
+	playerGetsNumber(player2);
 	this->player1.move();
 	this->player2.move();
 }
+
 //TODO: change the letters to defines
 int TheMathGame::assignToPlayer(char direction)
 {
@@ -312,7 +320,7 @@ void TheMathGame::updateBoard(int x, int y, short int number)
 	numOfDigits = getNumOfDigits(number);
 	for (int i = 1; i < numOfDigits; i++)
 	{
-		numberBoard[x + i][y] = PLACE_TAKEN;
+		numberBoard[x + i][y] = number;
 		numberBoard[x + i][y+1] = DO_NOT_PLACE;
 		numberBoard[x + i][y-1] = DO_NOT_PLACE;
 	}
@@ -335,4 +343,84 @@ int TheMathGame::getNumOfDigits(short int num)
 		num = num / 10;
 	}
 	return count;
+}
+void TheMathGame::playerGetsNumber(Player &p)
+{
+	if (isPlayerGetsNumber(p))
+	{
+		if (numberBoard[p.getX()][p.getY()]==p.getTargetNum())  // TODO: check if we can turn into a function
+		{
+			p.setWinner(true);
+			p.setScore(p.getScore() + 1);
+			printframe(currentLevel);
+		}
+		else
+		{
+			
+			removeNumberFromBoard(p.getX(),p.getY());
+			updateLives(p);
+			
+		}
+		//TODO: if lives == 0 then player is dead. if both are dead, next level
+	}
+
+
+}
+bool TheMathGame::isPlayerGetsNumber(Player &p) const
+{
+	int playerLocationX, playerLocationY;
+
+	playerLocationX = p.getX();
+	playerLocationY = p.getY();
+
+
+	if (numberBoard[playerLocationX][playerLocationY] >= 0) //if lower than 0 it means that it is an empty cell or invalid cell
+		return true;
+
+	return false;
+}
+
+void TheMathGame::removeNumberFromBoard(int x, int y)
+{
+	int i = 0;
+	while (numberBoard[x - i][y] != DO_NOT_PLACE && (x - i) != 0)
+	{
+		i++;
+	}
+	x = x - i;
+	if (x == 0)
+	{
+		numberBoard[x][y + 1] = EMPTY_CELL;
+		numberBoard[x][y - 1] = EMPTY_CELL;
+		gotoxy(x, y);
+		cout << " ";
+	}
+	numberBoard[x][y] = EMPTY_CELL;
+	i = 1;
+	do
+	{
+		gotoxy(x + i, y);
+		cout << " ";
+		numberBoard[x + i][y] = EMPTY_CELL;
+
+		numberBoard[x + i][y + 1] = EMPTY_CELL;
+		numberBoard[x + i][y - 1] = EMPTY_CELL;
+		i++;
+	} while (numberBoard[x + i][y] != DO_NOT_PLACE && (x + i) != 79);
+	if ((x + i) == 79)
+	{
+		gotoxy(x + i, y);
+		cout << " ";
+		numberBoard[x + i][y + 1] = EMPTY_CELL;
+		numberBoard[x + i][y - 1] = EMPTY_CELL;
+	}
+	numberBoard[x + i][y] = EMPTY_CELL;
+}
+
+
+
+void TheMathGame::updateLives(Player &p)
+{
+	p.setLives(p.getLives() - 1);
+	printframe(currentLevel);
 }
