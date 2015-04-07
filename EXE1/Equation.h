@@ -22,6 +22,7 @@ public:
 	Equation(const unsigned int currentLevel);
 	void printEquation(int x, int y);
 	char getOperator(int oper);
+	int getTargetNumber() { return targetNum; }
 };
 
 #endif
