@@ -117,6 +117,7 @@ bool GameManager::playGame()
 char GameManager::playNextLevel()
 {
 	++currentLevel;
+	actualGame.setCurrentLevel(currentLevel);
 	actualGame.startLevel(currentLevel);
 
 	//------------------------------------------------------------------------------
