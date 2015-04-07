@@ -27,6 +27,7 @@ public:
 	void setEquations(const unsigned int currentLevel);
 	int assignToPlayer(char direction);
 	bool isValid(char direction);
+	void didPlayersCollide();
 };
 
 #endif
