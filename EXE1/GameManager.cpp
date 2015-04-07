@@ -47,7 +47,7 @@ char GameManager::mainMenu()const
 	} while (!GameManager::MainMenuOptions::isValidOption(selection));
 	return selection;
 }
-
+ 
 void GameManager::run()
 {
 	bool userWantsToPlay = true;
