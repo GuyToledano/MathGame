@@ -3,6 +3,7 @@
 #include "Equation.h"
 #include <iostream>
 #include "io_utils.h"
+//#include "TheMathGame.h"
 using namespace std;
 
 #define PLAYER_1_UP 'w'
@@ -13,6 +14,7 @@ using namespace std;
 #define PLAYER_2_DOWN 'm'
 #define PLAYER_2_LEFT 'j'
 #define PLAYER_2_RIGHT 'l'
+
 #define X_MAX 79
 #define X_MIN 0
 #define Y_MAX 23
@@ -22,6 +24,7 @@ using namespace std;
 #define MOVE_UP -1
 #define MOVE_DOWN 1
 #define STAY 0
+
 class Player
 {
 	char body;
@@ -59,6 +62,7 @@ public:
 
 	void printlives(int x, int y);
 	int getscore() { return score; }
+	bool isPlayerStationary() { return (dirx == STAY && diry == STAY); }
 
 };
 
