@@ -34,8 +34,7 @@
 /****************************************************/
 /******************* Defines ************************/
 /****************************************************/
-#define LAST_LEVEL 20
-#define FIRST_LEVEL 0
+
 
 using namespace std;
 
@@ -43,17 +42,20 @@ using namespace std;
 // actual games will inherit from this class and implement the required methods
 class ISpecificGame
 {
+	unsigned int currentLevel;
+
 public:
 	// virtual fucnction with =0 is called an "abstract method"
 	// abstract method must be implemented by non-abstract inherited class
-	virtual bool isLevelDone()const = 0;
-	virtual bool hasNextLevel()const = 0;
-	virtual void startLevel() = 0;
+	virtual bool isLevelDone() = 0;
+	virtual bool hasNextLevel(const unsigned int currentLevel)const = 0;
+	virtual void startLevel(const unsigned int currentLevel) = 0;
 
 	// get a list with keyHits and returns a list with the keys that were used
 	virtual void doIteration(const list<char>& keyHits) = 0;
 	virtual void doSubIteration() = 0;
-
+	virtual unsigned int getCurrentLevel() = 0;
+	virtual void setCurrentLevel(unsigned int currentLevel) = 0;
 	/******************************************************/
 	virtual void showInstructions()const = 0;
 	/******************************************************/
