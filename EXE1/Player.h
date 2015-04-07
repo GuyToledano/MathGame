@@ -62,6 +62,7 @@ public:
 
 	void printlives(int x, int y);
 	int getscore() { return score; }
+	bool isPlayerStationary() { return (dirx == STAY && diry == STAY); }
 
 };
 
