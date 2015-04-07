@@ -29,8 +29,8 @@ class Player
 
 	// TODO: create 'Point' class, and point data member instead of 2 ints
 public:
-	Player(char body='*',  int x=0, int y=0, int score = 0, int lives = 3) 
-		: body(body), x(x), y(y), score(score), lives(lives) {}
+	Player(char body= '*',  int x=0, int y=0, int dirx=0, int diry=0, int score = 0, int lives = 3) 
+		: body(body), x(x), y(y), dirx(dirx), diry(diry), score(score), lives(lives) {}
 
 	void setEquation(Equation *newEq) { eq = newEq; }
 	Equation* getEquation() { return eq; }
@@ -42,10 +42,15 @@ public:
 	int getX() { return x; }
 	int getY() { return y; }
 
+	void setDirx(int Dirx) { dirx = Dirx; }
+	void setDiry(int Diry) { diry = Diry; }
+	int getDirx() { return dirx; }
+	int getDiry() { return diry; }
+
 	void showPlayer(int x, int y);
 	void erasePlayer(int x, int y);
 	void changeDirection(char direction);
-	void move(char direction);
+	void move();
 
 	void printlives(int x, int y);
 	int getscore() { return score; }
