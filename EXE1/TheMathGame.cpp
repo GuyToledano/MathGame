@@ -3,6 +3,9 @@
 #include "io_utils.h"
 #include "Equation.h"
 
+//TODO: create function "levelDone. it will free the equasions
+
+//TODO: style the instructions a bit
 void TheMathGame::showInstructions()const
 {
 	clear_screen();
@@ -34,8 +37,6 @@ bool TheMathGame::isLevelDone()const
 }
 bool TheMathGame::hasNextLevel(const unsigned int currentLevel)const
 {
-
-
 	if (currentLevel < LAST_LEVEL)
 		return true;
 
@@ -46,13 +47,15 @@ void TheMathGame::startLevel(const unsigned int currentLevel)
 {
 	clear_screen();
 
-	this->player1 = Player('@', 10, 9, 0, 3);
-	this->player2 = Player('#', 70, 9, 0, 3);
+	this->player1 = Player('@', 10, 9, MOVE_RIGHT, STAY, 0, 3);
+	this->player2 = Player('#', 70, 9, MOVE_LEFT, STAY, 0, 3);
 	
-	this->player1.showPlayer(10, 9);
-	this->player2.showPlayer(70, 9);
 	setEquations(currentLevel);
 	printframe(currentLevel);
+
+	this->player1.showPlayer(10, 9);
+	this->player2.showPlayer(70, 9);
+
 }
 void TheMathGame::setEquations(const unsigned int currentLevel)
 {
@@ -81,56 +84,94 @@ void TheMathGame::printframe(const unsigned int currentLevel)
 // get a list with keyHits and returns a list with the keys that were used
 void TheMathGame::doIteration(const list<char>& keyHits)
 {
-	char direction;
+	static char direction1, direction2;
+	char hit;
 	int playerMove;
 	bool gotDirectionForPlayer1 = false;
 	bool gotDirectionForPlayer2 = false;
 
-	for (list<char>::const_iterator itr = keyHits.cbegin(); 
+	for (list<char>::const_iterator itr = keyHits.cbegin();
 		(itr != keyHits.cend()) && (gotDirectionForPlayer1 == false || gotDirectionForPlayer2 == false);
 		++itr)
 	{
-		direction = *itr;
-		if (isValid(direction))
+		hit = *itr;
+		if (isValid(hit))
 		{
-			playerMove = assignToPlayer(direction);
+			playerMove = assignToPlayer(hit);
 
 			if (playerMove == 1 && gotDirectionForPlayer1 == false)
 			{
 				gotDirectionForPlayer1 = true;
-				this->player1.move(direction);
+				direction1 = getDirection(hit);
+				this->player1.changeDirection(direction1);
+				//this->player1.move(direction);
 			}
 			if (playerMove == 2 && gotDirectionForPlayer2 == false)
 			{
 				gotDirectionForPlayer2 = true;
-				this->player2.move(direction);
-			}			
+				direction2 = getDirection(hit);
+				this->player2.changeDirection(direction2);
+				//this->player2.move(direction);
+			}
+		}
+		if (isValid(direction1) == false)
+		{
+			direction1 = MOVE_RIGHT;
+			//this->player1.move(MOVE_RIGHT);
+			//this->player2.move(MOVE_LEFT);
+
+		}
+		if (isValid(direction2) == false)
+		{
+			direction2 = MOVE_LEFT;
 		}
 	}
+	this->player1.move(direction1);
+	this->player2.move(direction2);
 }
-//TODO DEFINE PLAYER X X
+int TheMathGame::getDirection(char hit)
+{
+	if (hit == PLAYER_1_UP || hit == PLAYER_2_UP)
+		return MOVE_UP;
+	else if (hit == PLAYER_1_DOWN || hit == PLAYER_2_DOWN)
+		return MOVE_DOWN;
+	else if (hit == PLAYER_1_LEFT || hit == PLAYER_2_LEFT)
+		return MOVE_LEFT;
+	else if (hit == PLAYER_1_RIGHT || hit == PLAYER_2_RIGHT)
+		return MOVE_RIGHT;
+
+	return STAY;
+}
+//TODO: change the letters to defines
 int TheMathGame::assignToPlayer(char direction)
 {
-	switch (direction)
+	switch (direction)   //switch to check whisch button was pressed
 	{
-	case 'w':
-		return 1;
-	case 'd':
-		return 1;
-	case 'a':
-		return 1;
-	case 'x':
-		return 1;
-	case 'i':
-		return 2;
-	case 'l':
-		return 2;
-	case 'j':
-		return 2;
-	case 'm':
-		return 2;
+	case PLAYER_1_UP:
+		return PLAYER_1;
+
+	case PLAYER_1_RIGHT:
+		return PLAYER_1;
+
+	case PLAYER_1_LEFT:
+		return PLAYER_1;
+
+	case PLAYER_1_DOWN:
+		return PLAYER_1;
+
+	case PLAYER_2_UP:
+		return PLAYER_2;
+
+	case PLAYER_2_RIGHT:
+		return PLAYER_2;
+
+	case PLAYER_2_LEFT:
+		return PLAYER_2;
+
+	case PLAYER_2_DOWN:
+		return PLAYER_2;
 	}
-	return 0;
+	return 0;        //returns 0 as default if the keyboard hit didnt belong to neither one of the players
 }
 bool TheMathGame::isValid(char direction)
 {
