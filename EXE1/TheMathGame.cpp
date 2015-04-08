@@ -60,8 +60,10 @@ void TheMathGame::startLevel(const unsigned int currentLevel)
 	this->player2 = Player('#', 70, 9, MOVE_LEFT, STAY, 0, 3);
 	boardInit();
 	setEquations(currentLevel);
+	
 	player1.setTargetNum(player1.getEquation()->getTargetNumber());
 	player2.setTargetNum(player1.getEquation()->getTargetNumber());
+
 	printframe(currentLevel);
 
 	this->player1.showPlayer(10, 9);
