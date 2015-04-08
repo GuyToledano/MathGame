@@ -60,6 +60,6 @@ void Player::move()
 		y = Y_MIN;
 	else if (y < Y_MIN)
 		y = Y_MAX;
-
-	showPlayer(x, y);
+	if (this->getLives() > 0)
+		showPlayer(x, y);
 }
