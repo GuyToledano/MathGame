@@ -111,12 +111,12 @@ void TheMathGame::doIteration(const list<char>& keyHits)
 		{
 			playerMove = assignToPlayer(direction);
 
-			if (playerMove == PLAYER_1 && gotDirectionForPlayer1 == false)
+			if (playerMove == PLAYER_1 && gotDirectionForPlayer1 == false && player1.getLives() > 0)
 			{
 				gotDirectionForPlayer1 = true;
 				this->player1.changeDirection(direction);
 			}
-			if (playerMove == PLAYER_2 && gotDirectionForPlayer2 == false)
+			if (playerMove == PLAYER_2 && gotDirectionForPlayer2 == false && player2.getLives() > 0)
 			{
 				gotDirectionForPlayer2 = true;
 				this->player2.changeDirection(direction);
@@ -353,6 +353,7 @@ void TheMathGame::playerGetsNumber(Player &p)
 		if (numberBoard[p.getX()][p.getY()]==p.getTargetNum())  // TODO: check if we can turn into a function
 		{
 			p.setWinner(true);
+			removeNumberFromBoard(p.getX(), p.getY());
 			p.setScore(p.getScore() + 1);
 			printframe(currentLevel);
 		}
@@ -361,11 +362,24 @@ void TheMathGame::playerGetsNumber(Player &p)
 			
 			removeNumberFromBoard(p.getX(),p.getY());
 			updateLives(p);
+			if (p.getLives() <= 0) //if player is dead
+			{
+				removePlayerFromBoard(p);
+			}
 			
 		}
 		//TODO: if lives == 0 then player is dead. if both are dead, next level
 	}
 
+
+}
+//TODO: disable movement 
+void TheMathGame::removePlayerFromBoard(Player &p)
+{
+	p.setXY(OUT_OF_BOARD, OUT_OF_BOARD);
+	p.erasePlayer(p.getX(),p.getY());	
+	p.setDirx(STAY);
+	p.setDiry(STAY);
 
 }
 bool TheMathGame::isPlayerGetsNumber(Player &p) const
