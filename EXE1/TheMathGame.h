@@ -26,7 +26,7 @@
 #define EMPTY_CELL -1
 #define PLACE_TAKEN -2
 #define DO_NOT_PLACE -3
-
+#define OUT_OF_BOARD 81
 using namespace std;
 
 class TheMathGame : public ISpecificGame
@@ -62,7 +62,7 @@ public:
 	bool isPlayerGetsNumber(Player &p) const;
 	void removeNumberFromBoard(int x, int y);
 	void updateLives(Player &p);
-
+	void removePlayerFromBoard(Player &p);
 
 };
 
